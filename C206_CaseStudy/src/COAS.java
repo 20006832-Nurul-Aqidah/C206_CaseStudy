@@ -5,7 +5,7 @@ public class COAS {
 
 	private ArrayList<account> accountList = new ArrayList<account>();
 	private ArrayList<Deal> dealList = new ArrayList<Deal>();
-	private ArrayList<Bid> bidList = new ArrayList<Bid>();
+	private static ArrayList<Bid> bidList = new ArrayList<Bid>();
 	private static ArrayList<item> itemList = new ArrayList<item>();
 
 	public static void main(String[] args) {
@@ -371,20 +371,56 @@ public class COAS {
 	
 
 	// (4) qid bid	
+	
+	public static final int bidCounter = 1;
+	
 	public static Bid inputBid() {
 		COAS.setHeader("Add New Bid");
-		int bidID = Helper.readInt("Enter Bid ID > ");
+		int bidCounter = 1;
+		for (Bid B : bidList) {
+			if (B.getBidID() == bidCounter) {
+				bidCounter++;	
+			}
+		}
 		String itemName = Helper.readString("Item to Bid > ");
 		double bidAmt = Helper.readDouble("Enter Amount to Bid >$");
 		String buyerEmail = Helper.readString("Enter Buyer's Email > ");
 		String sellerEmail = Helper.readString("Enter Seller's Email > ");
-		Bid bid = new Bid(bidID, itemName, bidAmt, buyerEmail, sellerEmail);
+		Bid bid = new Bid(bidCounter, itemName, bidAmt, buyerEmail, sellerEmail);
 		return bid;
 	}
+	
+	public static boolean compareBid (ArrayList<item> itemList, ArrayList<Bid> bidList, Bid bid) {
+		boolean isHigher = false;
+		for (item I : itemList) {
+			double bidIncrement = I.getBidinc() + I.getMinBidPrice();
+			if ((I.getItemName().toLowerCase().equalsIgnoreCase(bid.getItemName().toLowerCase())) &&
+			(bid.getBidAmt() > I.getMinBidPrice())) {
+				I.setMinBidPrice(bidIncrement);
+				bidList.add(bid);
+				isHigher = true;
+			}
+		}
+		return isHigher;
+	}
+	
+//	public static boolean checkEmptyField (Bid bid) {
+//		boolean isNotEmpty = false;
+//		if (!bid.getItemName().isEmpty() || !bid.getBuyerEmail().isEmpty() 
+//				|| !bid.getSellerEmail().isEmpty()) {
+//			isNotEmpty = true;
+//		}
+//		return isNotEmpty;
+//	}
 
 	public static void addBid(ArrayList<Bid> bidList, Bid bid) {
-		bidList.add(bid);
-		System.out.println("Bidding successful!");
+		boolean isHigher = compareBid(itemList, bidList, bid);
+		if (isHigher == true) {
+			System.out.println("Bid ID added!");
+			
+		} else {
+			System.out.println("Transaction failed!");
+		}
 	}
 
 	public static String retrieveAllBids(ArrayList<Bid> bidList) {
@@ -405,30 +441,20 @@ public class COAS {
 		System.out.println(output);
 	}
 
-	public static boolean doDeleteBid(ArrayList<Bid> bidList, int deleteID) {
+	public static boolean doDeleteBid(ArrayList<Bid> bidList, int deleteID,
+			ArrayList<account> accountList, String sellerEmail, String password) {
 		boolean isDeleted = false;
 		for (int i = 0; i < bidList.size(); i++) {
-			if (bidList.get(i).getBidID() == (deleteID)) {
-				bidList.remove(i);
-				isDeleted = true;
+			if (bidList.get(i).getBidID() != (deleteID)) {
+				System.out.println("Invalid bid ID!");
+				isDeleted = false;
+			}
+			else {
+				
 			}
 		}
 		return isDeleted;
 	}
-
-	public static void deleteID(ArrayList<Bid> bidList) {
-		COAS.setHeader("Delete Bid");
-		COAS.showAllBids(bidList);
-		int deleteID = Helper.readInt("Enter Bid ID to delete > ");
-		boolean isDeleted = doDeleteBid(bidList, deleteID);
-
-		if (isDeleted == false) {
-			System.out.println("Invalid Bid ID");
-		} else {
-			System.out.println("Bid ID " + deleteID + " successfully deleted!");
-		}
-	}
-
 	// (5) gy deal
 
 	public static Deal inputDeal() {
