@@ -57,8 +57,8 @@ public class COASTest {
 		item2 = new item("laptop","ASUS",700,"10/12/2020","25/12/2022",20);
 		
 		// Qid
-		bid1 = new Bid(1, "Spaceship Computer", 1000, "Jasmine@yahoo.com", "Justin@yahoo.com");
-		bid2 = new Bid(2, "Love Service 999", 60, "balmond@gmail.com", "johnson@gmail.com");
+		bid1 = new Bid(1, "mobile phone", 700, "Jasmine@yahoo.com", "Justin@yahoo.com");
+		bid2 = new Bid(2, "laptop", 800, "balmond@gmail.com", "johnson@gmail.com");
 		bidList = new ArrayList<Bid>();
 		
 		
@@ -184,26 +184,37 @@ public class COASTest {
 			
 	// Qid
 	@Test
-	public void addBidTest() {
+	public void compareBidTest() {
 		//BidList is not null so can add new item - boundary
 		assertNotNull("Check if there is a valid Bid arraylist to add to", bidList);
+		assertNotNull("Check if there is a valid Item arraylist to add to", itemList);
 		
 		//Given an empty bidList, upon adding 1 item, size of list is 1 - normal
+		COAS.additem(itemList, item1);
 		COAS.addBid(bidList, bid1);
+		COAS.additem(itemList, item2);
+		COAS.addBid(bidList, bid2);
+		
+		Boolean ok = COAS.compareBid(itemList, bidList, bid1);
+		assertTrue("Test if bid id will be added", ok);
+		
 		assertEquals("Check that Bid arraylist size is 1", 1, bidList.size());
 		//Check that item added matches first item in the list
 		assertSame("Check that Bid is added", bid1, bidList.get(0));
 		
 		//Add another item, size of list is 2 - normal
-		COAS.addBid(bidList, bid2);
+		ok = COAS.compareBid(itemList, bidList, bid2);
+		assertTrue("Test if bid id will be added", ok);
 		assertEquals("Check that Bid arraylist size is 2", 2, bidList.size());
 		//Check that item added matches 2nd item in the list
 		assertSame("Check that Bid is added", bid2, bidList.get(1));
 	}
+	
 	@Test
 	public void retrieveAllBidTest() {
 		//test if bidList is not null but empty - boundary
 		assertNotNull("Test if there is a valid Bid arraylist to retrieve bidding", bidList);
+		assertNotNull("Check if there is a valid Item arraylist to retrieve item", itemList);		
 		
 		//test if bidlist retrieved for COAS is empty - boundary
 		String allBids = COAS.retrieveAllBids(bidList);
@@ -211,15 +222,26 @@ public class COASTest {
 		assertEquals("Check that showAllBids", testOutput, allBids);
 		
 		//with an empty list, add 2 items, size of list = 2 (normal)
-		COAS.addBid(bidList, bid1);
-		COAS.addBid(bidList, bid2);
-		assertEquals("Test that Bid arraylist size is 2", 2, bidList.size());
+		COAS.additem(itemList, item1);
+		COAS.additem(itemList, item2);
+		
+		Boolean ok = COAS.compareBid(itemList, bidList, bid1);
+		assertTrue("Test if bid id will be added", ok);
+		
+		assertEquals("Check that Bid arraylist size is 1", 1, bidList.size());
+		//Check that item added matches first item in the list
+		assertSame("Check that Bid is added", bid1, bidList.get(0));
+		
+		//Add another item, size of list is 2 - normal
+		ok = COAS.compareBid(itemList, bidList, bid2);
+		assertTrue("Test if bid id will be added", ok);
+		assertEquals("Check that Bid arraylist size is 2", 2, bidList.size());
 		
 		//test if expected output matches the list for COAS 
 		allBids = COAS.retrieveAllBids(bidList);
-		testOutput = String.format("\n%-10s %-25s %-25s %-25s %s", "1", "Spaceship Computer", 
-				"1000.00", "Jasmine@yahoo.com", "Justin@yahoo.com");
-		testOutput += String.format("\n%-10s %-25s %-25s %-25s %s", "2", "Love Service 999", "60.00", 
+		testOutput = String.format("\n%-10s %-25s %-25s %-25s %s", "1", "mobile phone", 
+				"700.00", "Jasmine@yahoo.com", "Justin@yahoo.com");
+		testOutput += String.format("\n%-10s %-25s %-25s %-25s %s", "2", "laptop", "800.00", 
 				"balmond@gmail.com", "johnson@gmail.com");
 		
 		assertEquals("Test that showAllBids", testOutput, allBids);
@@ -228,18 +250,22 @@ public class COASTest {
 	public void doDeleteBidTest() {
 		//boundary
 		assertNotNull("Test if there is a valid Bid arraylist to delete from", bidList);
-		COAS.addBid(bidList, bid1);
+		assertNotNull("Check if there is a valid Item arraylist to add to", itemList);	
+		
+		COAS.additem(itemList, item1);
+		COAS.additem(itemList, item2);
+		
+		COAS.compareBid(itemList, bidList, bid1);
 		
 		//test that id will be deleted when it matches item in bidlist(normal)
 		Boolean ok = COAS.doDeleteBid(bidList, 1);
 		assertTrue("Test if bid id will be deleted", ok);
 		
 		//test that id will not be deleted when it does not match item in bidlist(error)
-		COAS.addBid(bidList, bid2);
+		COAS.compareBid(itemList, bidList, bid2);
 		ok = COAS.doDeleteBid(bidList, 1);
 		assertFalse("Test if bid id will NOT be deleted", ok);
-		
-	}	
+	}
 			
 	// GY
 	@Test
