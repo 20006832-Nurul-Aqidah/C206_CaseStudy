@@ -440,21 +440,32 @@ public class COAS {
 		output += retrieveAllBids(bidList);
 		System.out.println(output);
 	}
-
-	public static boolean doDeleteBid(ArrayList<Bid> bidList, int deleteID,
-			ArrayList<account> accountList, String sellerEmail, String password) {
+	
+	public static boolean doDeleteBid(ArrayList<Bid> bidList, int deleteID, char cfm) {
 		boolean isDeleted = false;
 		for (int i = 0; i < bidList.size(); i++) {
-			if (bidList.get(i).getBidID() != (deleteID)) {
-				System.out.println("Invalid bid ID!");
-				isDeleted = false;
-			}
-			else {
-				
+			if ((bidList.get(i).getBidID() == (deleteID)) && (cfm == 'Y' || cfm == 'y')){
+				bidList.remove(i);
+				isDeleted = true;
 			}
 		}
 		return isDeleted;
 	}
+
+	public static void deleteID(ArrayList<Bid> bidList) {
+		COAS.setHeader("Delete Bid");
+		COAS.showAllBids(bidList);
+		int deleteID = Helper.readInt("Enter Bid ID to delete > ");
+		char cfm = Helper.readChar("Confirm delete (Y/N) > ");
+		boolean isDeleted = doDeleteBid(bidList, deleteID, cfm);
+
+		if (isDeleted == false) {
+			System.out.println("Invalid Bid ID");
+		} else {
+			System.out.println("Bid ID " + deleteID + " successfully deleted!");
+		}
+	}
+
 	// (5) gy deal
 
 	public static Deal inputDeal() {
