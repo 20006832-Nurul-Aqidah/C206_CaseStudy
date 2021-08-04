@@ -52,7 +52,7 @@ public class COAS {
 				} else if (type == 2) {
 					// jh add method
 					Category category1 = inputCategory();
-					//COAS.addCategory(categoryList, category1);
+					COAS.addCategory(categoryList, category1);
 
 				} else if (type == 3) {
 					// nelly add method
@@ -257,6 +257,10 @@ public class COAS {
 		String categoryName = Helper.readString("Enter Category Name > ");
 		Category category1 = new Category(categoryName);
 		return category1;
+	}
+	public static void addCategory(ArrayList<Category> categoryList, Category category1) {
+		categoryList.add(category1);
+		System.out.println("Category added!");
 	}
 
 	public static void viewAllCategory(ArrayList<Category> categoryList) {
