@@ -409,15 +409,6 @@ public class COAS {
 		return isHigher;
 	}
 
-	//	public static boolean checkEmptyField (Bid bid) {
-	//		boolean isNotEmpty = false;
-	//		if (!bid.getItemName().isEmpty() || !bid.getBuyerEmail().isEmpty() 
-	//				|| !bid.getSellerEmail().isEmpty()) {
-	//			isNotEmpty = true;
-	//		}
-	//		return isNotEmpty;
-	//	}
-
 	public static void addBid(ArrayList<Bid> bidList, Bid bid) {
 		boolean isHigher = compareBid(itemList, bidList, bid);
 		if (isHigher == true) {

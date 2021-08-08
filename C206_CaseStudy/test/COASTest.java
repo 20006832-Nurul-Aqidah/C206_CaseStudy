@@ -189,11 +189,9 @@ public class COASTest {
 		assertNotNull("Check if there is a valid Bid arraylist to add to", bidList);
 		assertNotNull("Check if there is a valid Item arraylist to add to", itemList);
 		
-		//Given an empty bidList, upon adding 1 item, size of list is 1 - normal
+		//Given an empty itemList, upon adding 1 item, size of list is 1 - normal
 		COAS.additem(itemList, item1);
-		COAS.addBid(bidList, bid1);
 		COAS.additem(itemList, item2);
-		COAS.addBid(bidList, bid2);
 		
 		Boolean ok = COAS.compareBid(itemList, bidList, bid1);
 		assertTrue("Test if bid id will be added", ok);
