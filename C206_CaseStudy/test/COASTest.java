@@ -193,6 +193,7 @@ public class COASTest {
 		COAS.additem(itemList, item1);
 		COAS.additem(itemList, item2);
 		
+		//add item into bidlist
 		Boolean ok = COAS.compareBid(itemList, bidList, bid1);
 		assertTrue("Test if bid id will be added", ok);
 		
@@ -269,7 +270,7 @@ public class COASTest {
 		// Test that size of bid list is reduced by 1 if deletion is successful.
 		assertEquals("Check that bidList size is 0", 0, bidList.size());
 		
-		//test that id will be deleted when it does not match item in bidlist(normal)
+		//test that id will be deleted when it does not match item in bidlist
 		COAS.compareBid(itemList, bidList, bid2);
 		ok = COAS.doDeleteBid(bidList, 1, 'y');
 		assertFalse("Test fail for wrong id but 'y'", ok);
@@ -277,17 +278,17 @@ public class COASTest {
 		// Test that size of bid list is 1 if deletion is unsuccessful.
 		assertEquals("Check that bidList size is 1", 1, bidList.size());
 		
-		//test that id will be deleted when it does not match item in bidlist(normal)
+		//test that id will be deleted when it does not match item in bidlist
 		COAS.compareBid(itemList, bidList, bid2);
 		ok = COAS.doDeleteBid(bidList, 1, 'Y');
 		assertFalse("Test fail for wrong id but 'Y'", ok);
 
-		//test that id will be deleted when it does not match item in bidlist(normal)
+		//test that id will be deleted when it does not match item in bidlist
 		COAS.compareBid(itemList, bidList, bid2);
 		ok = COAS.doDeleteBid(bidList, 1, 'n');
 		assertFalse("Test fail for correct id but 'n'", ok);
 
-		//test that id will be deleted when it does not match item in bidlist(normal)
+		//test that id will be deleted when it does not match item in bidlist
 		COAS.compareBid(itemList, bidList, bid2);
 		ok = COAS.doDeleteBid(bidList, 1, 'N');
 		assertFalse("Test fail for correct id but 'N'", ok);
